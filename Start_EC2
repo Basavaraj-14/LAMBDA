@@ -1,0 +1,11 @@
+import boto3
+ec2 = boto3.client('ec2')
+def lambda_handler(event, context):
+    instances = ['id1234567890']
+    ec2.start_instance(InstanceIds=instances)
+    print(f"instance is stopped: {instances}")
+    return{
+        'statuscode': 200,
+        'body': f"successfully started the instance {instances}"
+
+    }
