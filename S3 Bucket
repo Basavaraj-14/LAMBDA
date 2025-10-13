@@ -1,0 +1,37 @@
+import boto3
+import json
+
+s3 = boto3.client('s3')
+
+def lambda_handler(event, context):
+    action = event.get('action', 'none').lower()
+    
+    # List all buckets
+    response = s3.list_buckets()
+    buckets = [b['Name'] for b in response['Buckets']]
+    
+    print(f"S3 Buckets: {buckets}")
+    
+    # Iterate over each bucket
+    results = {}
+    for bucket_name in buckets:
+        # Get the number of objects in the bucket
+        objects = s3.list_objects_v2(Bucket=bucket_name)
+        if action == 'bucket_empty' and objects.get('KeyCount', 0) == 0:
+            # Delete empty bucket
+            s3.delete_bucket(Bucket=bucket_name)
+            results[bucket_name] = 'deleted'
+            print(f"The bucket is deleted: {bucket_name}")
+        else:
+            # Keep bucket
+            results[bucket_name] = 'kept'
+            print(f"The bucket is not empty or action not delete: {bucket_name}")
+    
+    # Return response
+    return {
+        'statusCode': 200,
+        'body': json.dumps({
+            'message': 'Buckets processed successfully',
+            'results': results
+        })
+    }
