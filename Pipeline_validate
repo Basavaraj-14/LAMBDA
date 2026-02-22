@@ -1,0 +1,9 @@
+def validate_pipeline(stages):
+    required = {'build', 'test', 'scan', 'deploy'}
+    present = set(stages)
+    missing = required - present
+    if missing:
+        raise ValueError(f"missing stages: {missing}")
+    return f"pipeline validate {len(stages)} stages"
+stages = ['build', 'test', 'scan', 'deploy']
+print(validate_pipeline(stages))
