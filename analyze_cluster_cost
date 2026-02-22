@@ -1,0 +1,26 @@
+def analyze_eks_costs(clusters):
+    total_cost = 0
+    for cluster in clusters:
+        nodes = cluster['node_groups']
+        cost = sum(
+            node['instance_count'] * node['hourly_rate']
+            for node in nodes
+        )
+        total_cost += cost
+        print(f"cluster {cluster['name']}: ${cost:.2f}")
+    return {
+        'total': total_cost,
+        'avg': total_cost / len(clusters) if clusters else 0
+    }
+clusters = [
+    {
+        'name': 'prod',
+        'node_groups': [
+            {
+                'instance_count': 12,
+                'hourly_rate': 0.15
+            }
+        ]
+    }
+]
+print(analyze_eks_costs(clusters))
