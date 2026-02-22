@@ -1,0 +1,13 @@
+def missing_number(nums):
+    max_val = max(nums)
+    min_val = min(nums)
+    expected = sum(range(max_val, min_val + 1))
+    return expected - sum(nums)
+    #return list(full - set(nums))
+
+
+def missing_number(nums):
+   n = len(nums) + 1
+   expected = n * (n + 1) // 2
+   return expected - sum(nums)
+   print(missing_number([1,3,4])
