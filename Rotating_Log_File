@@ -1,4 +1,4 @@
-import logger  #builtin module for log messages
+import logging  #builtin module for log messages
 from logging.handlers import RotatingFileHandler #special handler that rotates the log file when reaches a defined size.
 
 logger = logging.getLogger("myapp") #create logger with object called myapp and this logger used to write log messages.
