@@ -1,0 +1,22 @@
+import logger  #builtin module for log messages
+from logging.handlers import RotatingFileHandler #special handler that rotates the log file when reaches a defined size.
+
+logger = logging.getLogger("myapp") #create logger with object called myapp and this logger used to write log messages.
+
+logger.setLevel(logging.INFO) #set log level, and this defines which log messages will be recorded. INFO, WARNING, ERROR
+
+handler = RotatingFileHandler( #create rotating file handler, this defines how logs are stored and rotated
+    "app.log",   #main log file
+    maxBytes=1024*1024,  #Rotate when file reached 1MB
+    backupCount=3  #keep old log files
+)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s") #Define log format, %(asctime)s --> timestamp, %(levelname)s --> log level, %(message)s --> atual message
+
+handler.setFormatter(formatter) #attach formatter to the handler, this applies format to the log file.
+
+logger.addHandler(handler) #attach handler to the logger, this connects logger to the rotating file handler, so logs are written to "app.log" file.
+
+for i in range(10000):  #this loop writes 10000 log messages, As the file reached to 1MB, then handler will automatically rotate the file.
+    logger.info("this is a log message") 
+
+
